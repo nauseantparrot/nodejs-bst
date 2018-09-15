@@ -9,35 +9,7 @@ const Node = require('./node')
  * @since 1.0.0
  * @extends Node
  */
-class Tree extends Node {
-
-    /**
-     * @constructor Tree
-     * @param {*} args Single number or array of numbers to initialize structure with
-     */
-    constructor(args) {
-        if (typeof args === 'undefined') {
-            super()
-            return
-        }
-
-        if (typeof args === 'number') {
-            super(args)
-            return
-        }
-
-        if (!Array.isArray(args)) {
-            throw new Error('You must pass a number or array of numbers as argument of a Tree constructor')
-        }
-
-        super()
-        
-        for (const number of args) {
-            this.addNumber(number)
-        }
-    }
-
-}
+class Tree extends Node {}
 
 /**
  * @module tree

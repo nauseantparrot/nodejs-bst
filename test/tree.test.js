@@ -10,7 +10,7 @@ describe('Binary search tree (BST) data structure instance testing', () => {
     })
 
     test('Initialize a binary search tree with a single number', () => {
-        const rndNumber = Math.round(Math.random * 100)
+        const rndNumber = Math.round(Math.random() * 100)
         const bst = new BST(rndNumber)
         expect(bst.value).toBe(rndNumber)
         expect(bst.leftNode).toBe(null)
@@ -23,6 +23,20 @@ describe('Binary search tree (BST) data structure instance testing', () => {
         expect(bst.value).toBe(3)
         expect(bst.leftNode.value).toBe(1)
         expect(bst.rightNode.value).toBe(7)
+    })
+
+    test('Initialize a binary search tree with a string', () => {
+        const string = 'foo'
+        expect(() => {
+            const bst = new BST(string)
+        }).toThrowError()
+    })
+
+    test('Initialize a binary search tree with an array of strings', () => {
+        const arrStrings = ['foo', 'bar']
+        expect(() => {
+            const bst = new BST(arrStrings)
+        }).toThrowError()
     })
 
 })

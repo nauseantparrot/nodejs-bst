@@ -37,9 +37,7 @@ class Node {
 
         this._appendNode = this._appendNode.bind(this)
         this._hasChildNodes = this._hasChildNodes.bind(this)
-        this._isRoot = this._isRoot.bind(this)
         this._removeChildNode = this._removeChildNode.bind(this)
-        this._replaceChildNode = this._replaceChildNode.bind(this)
         this.addMultiple = this.addMultiple.bind(this)
         this.addNumber = this.addNumber.bind(this)
         this.hasNumber = this.hasNumber.bind(this)
@@ -62,21 +60,34 @@ class Node {
             throw new Error('You must pass a node instance as argument to the _appendNode method')
         }
 
+        // Case when the root node was removed
+        if (this.value === null) {
+            this.value = node.value
+            if (node.rightNode !== null) {
+                this._appendNode(node.rightNode)
+            }
+            if (node.leftNode !== null) {
+                this._appendNode(node.leftNode)
+            }
+            return this
+        }
+
         if (node.value < this.value) {
             if (this.leftNode === null) {
                 this.leftNode = node
-                return
+                return this
             }
             this.leftNode._appendNode(node)
-            return
+            return this
         }   else if (node.value > this.value) {
             if (this.rightNode === null) {
                 this.rightNode = node
-                return
+                return this
             }
             this.rightNode._appendNode(node)
-            return
+            return this
         }
+        return this
     }
 
     /**
@@ -94,19 +105,6 @@ class Node {
 
     /**
      * @private
-     * @function
-     * @name _isRoot
-     * @returns {boolean}
-     */
-    _isRoot() {
-        if (this.parentNode === null) {
-            return true
-        }
-        return false
-    }
-
-    /**
-     * @private
      * @method
      * @name _removeChildNode
      * @param {Node} node
@@ -116,39 +114,18 @@ class Node {
             throw new Error('You must pass a node instance as argument to the _removeChildNode method')
         }
 
-        if (this.leftNode !== null && this.leftNode.value === node.value) {
-            this.leftNode = null
-            return this
+        if (node.value < this.value) {
+            if (this.leftNode !== null && this.leftNode.value === node.value) {
+                this.leftNode = null
+                return this
+            }
+        }   else if (node.value > this.value) {
+            if (this.rightNode !== null && this.rightNode.value === node.value) {
+                this.rightNode = null
+                return this
+            }
         }
-        if (this.rightNode !== null && this.rightNode.value === node.value) {
-            this.rightNode = null
-            return this
-        }
-    }
-
-    /**
-     * @private
-     * @method
-     * @name _replaceChildNode
-     * @param {Node} node
-     * @param {Node} replacement
-     */
-    _replaceChildNode(node, replacement) {
-        if (typeof node === 'undefined' || !(node instanceof Node)) {
-            throw new Error('You must pass a node instance as node argument of the _removeChildNode method')
-        }
-        if (typeof replacement === 'undefined' || !(replacement instanceof Node)) {
-            throw new Error('You must pass a node instance as replacement argument of the _removeChildNode method')
-        }
-
-        if (this.leftNode !== null && this.leftNode.value === node.value) {
-            this.leftNode = replacement
-            return this
-        }
-        if (this.rightNode !== null && this.rightNode.value === node.value) {
-            this.rightNode = replacement
-            return this
-        }
+        return this
     }
 
     /**
@@ -164,6 +141,7 @@ class Node {
         for (let i = 0; i < arrNumbers.length; i++) {
             this.addNumber(arrNumbers[i])
         }
+        return this
     }
 
     /**
@@ -179,27 +157,28 @@ class Node {
         // Set the initial value of the node if it is null
         if (this.value === null) {
             this.value = number
-            return
+            return this
         }
 
         // Values cannot get duplicated in the structure
         if (this.value === number) {
-            return
+            return this
         }
 
         if (number < this.value) {
             if (this.leftNode === null) {
                 this.leftNode = new Node(number, this)
-                return
+                return this
             }
             this.leftNode.addNumber(number)
         }   else {
             if (this.rightNode === null) {
                 this.rightNode = new Node(number, this)
-                return
+                return this
             }
             this.rightNode.addNumber(number)
         }
+        return this
     }
 
     /**
@@ -250,7 +229,10 @@ class Node {
             throw new Error('You must pass an array to the removeMultiple function')
         }
         
-        // ...
+        for (let i = 0; i < arrNumbers.length; i++) {
+            this.removeNumber(arrNumbers[i])
+        }
+        return this
     }
 
     /**
@@ -264,29 +246,36 @@ class Node {
         }
 
         if (!this.hasNumber(number)) {
-            return
+            return this
         }
 
-        if (this._isRoot && this.value === number) {
-            if (this._hasChildNodes) {
-                if (this.rightNode !== null) {
-                    // ...
-                }
+        if (this.value === number) {
+            const clone = Object.assign(new Node(), this)
+
+            this.value = null
+
+            if (!this._hasChildNodes()) {
+                return this
             }
-            this = new Node()
-            return
+
+            if (this.rightNode !== null) {
+                this._removeChildNode(clone.rightNode)
+                this._appendNode(clone.rightNode)
+            }
+            if (this.leftNode !== null) {
+                this._removeChildNode(clone.leftNode)
+                this._appendNode(clone.leftNode)
+            }
         }
 
         if (number < this.value) {
-            if (this.leftNode.value === number) {
-                // ...
-            }
+            this.leftNode.removeNumber(number)
+            return this
         }
 
         if (number > this.value) {
-            if (this.rightNode.value === number) {
-                // ...
-            }
+            this.rightNode.removeNumber(number)
+            return this
         }
     }
 

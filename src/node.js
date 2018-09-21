@@ -46,7 +46,6 @@ class Node {
         this.removeNumber = this.removeNumber.bind(this)
         this.toJson = this.toJson.bind(this)
         this.toString = this.toString.bind(this)
-        this.toXml = this.toXml.bind(this)
     }
 
     /**
@@ -69,25 +68,24 @@ class Node {
             if (node.leftNode !== null) {
                 this._appendNode(node.leftNode)
             }
-            return this
+            return
         }
 
         if (node.value < this.value) {
             if (this.leftNode === null) {
                 this.leftNode = node
-                return this
+                return
             }
             this.leftNode._appendNode(node)
-            return this
+            return
         }   else if (node.value > this.value) {
             if (this.rightNode === null) {
                 this.rightNode = node
-                return this
+                return
             }
             this.rightNode._appendNode(node)
-            return this
+            return
         }
-        return this
     }
 
     /**
@@ -114,18 +112,17 @@ class Node {
             throw new Error('You must pass a node instance as argument to the _removeChildNode method')
         }
 
-        if (node.value < this.value) {
+        if (this.leftNode !== null && node.value === this.leftNode.value) {
             if (this.leftNode !== null && this.leftNode.value === node.value) {
                 this.leftNode = null
-                return this
+                return
             }
-        }   else if (node.value > this.value) {
+        }   else if (this.rightNode !== null && node.value === this.rightNode.value) {
             if (this.rightNode !== null && this.rightNode.value === node.value) {
                 this.rightNode = null
-                return this
+                return
             }
         }
-        return this
     }
 
     /**
@@ -141,7 +138,6 @@ class Node {
         for (let i = 0; i < arrNumbers.length; i++) {
             this.addNumber(arrNumbers[i])
         }
-        return this
     }
 
     /**
@@ -157,28 +153,27 @@ class Node {
         // Set the initial value of the node if it is null
         if (this.value === null) {
             this.value = number
-            return this
+            return
         }
 
         // Values cannot get duplicated in the structure
         if (this.value === number) {
-            return this
+            return
         }
 
         if (number < this.value) {
             if (this.leftNode === null) {
                 this.leftNode = new Node(number, this)
-                return this
+                return
             }
             this.leftNode.addNumber(number)
         }   else {
             if (this.rightNode === null) {
                 this.rightNode = new Node(number, this)
-                return this
+                return
             }
             this.rightNode.addNumber(number)
         }
-        return this
     }
 
     /**
@@ -232,7 +227,6 @@ class Node {
         for (let i = 0; i < arrNumbers.length; i++) {
             this.removeNumber(arrNumbers[i])
         }
-        return this
     }
 
     /**
@@ -246,7 +240,7 @@ class Node {
         }
 
         if (!this.hasNumber(number)) {
-            return this
+            return
         }
 
         if (this.value === number) {
@@ -255,27 +249,28 @@ class Node {
             this.value = null
 
             if (!this._hasChildNodes()) {
-                return this
+                return
             }
 
-            if (this.rightNode !== null) {
+            if (clone.rightNode !== null) {
                 this._removeChildNode(clone.rightNode)
                 this._appendNode(clone.rightNode)
             }
-            if (this.leftNode !== null) {
+            if (clone.leftNode !== null) {
                 this._removeChildNode(clone.leftNode)
                 this._appendNode(clone.leftNode)
             }
+            return
         }
 
         if (number < this.value) {
             this.leftNode.removeNumber(number)
-            return this
+            return
         }
 
         if (number > this.value) {
             this.rightNode.removeNumber(number)
-            return this
+            return
         }
     }
 
@@ -285,7 +280,43 @@ class Node {
      * @returns {string}
      */
     toJson() {
-        // ...
+        if (this.value === null) {
+            return {}
+        }
+
+        if (this.leftNode === null && this.rightNode === null) {
+            return {'value': this.value}
+        }
+
+        if (this.leftNode !== null && this.rightNode === null) {
+            return {
+                'children': [
+                    this.leftNode.toJson(),
+                    null
+                ],
+                'value': this.value
+            }
+        }
+
+        if (this.leftNode === null && this.rightNode !== null) {
+            return {
+                'children': [
+                    null,
+                    this.rightNode.toJson()
+                ],
+                'value': this.value
+            }
+        }
+
+        if (this.leftNode !== null && this.rightNode !== null) {
+            return {
+                'children': [
+                    this.leftNode.toJson(),
+                    this.rightNode.toJson()
+                ],
+                'value': this.value
+            }
+        }
     }
 
     /**
@@ -322,7 +353,25 @@ class Node {
      * @returns {string}
      */
     toXml() {
-        // ...
+        if (this.value === null) {
+            return '<node></node>'
+        }
+
+        if (this.leftNode === null && this.rightNode === null) {
+            return `<node><value>${this.value}</value></node>`
+        }
+
+        if (this.leftNode !== null && this.rightNode === null) {
+            return `<node><children>${this.leftNode.toXml()}<node></node></children><value>${this.value}</value></node>`
+        }
+
+        if (this.leftNode === null && this.rightNode !== null) {
+            return `<node><children><node></node>${this.rightNode.toXml()}</children><value>${this.value}</value></node>`
+        }
+
+        if (this.leftNode !== null && this.rightNode !== null) {
+            return `<node><children>${this.leftNode.toXml()}${this.rightNode.toXml()}</children><value>${this.value}</value></node>`
+        }
     }
 
 }

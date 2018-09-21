@@ -103,14 +103,69 @@ describe('Binary search tree (BST) data structure manipulation testing', () => {
     })
 
     test('Remove the root number from a BST with one child node', () => {
-        /*const bst = new BST([
+        const bst = new BST([
             4,
             2
         ])
 
         bst.removeNumber(4)
         expect(bst.value).toBe(2)
-        expect(bst.leftNode.value).toBe(null)*/
+        expect(bst.leftNode).toBe(null)
+    })
+
+    test('Remove the root number from a BST with both child nodes', () => {
+        const bst = new BST([
+            4,
+            2,
+            6
+        ])
+
+        bst.removeNumber(4)
+        expect(bst.value).toBe(6)
+        expect(bst.leftNode.value).toBe(2)
+        expect(bst.rightNode).toBe(null)
+    })
+
+    test('Remove the root number from a BST with a masive structure', () => {
+        const bst = new BST([
+            5,
+            3,
+            7,
+            4,
+            2,
+            9,
+            12,
+            1
+        ])
+
+        bst.removeNumber(5)
+        expect(bst.value).toBe(7)
+        expect(bst.leftNode.value).toBe(3)
+        expect(bst.leftNode.leftNode.value).toBe(2)
+        expect(bst.leftNode.leftNode.leftNode.value).toBe(1)
+        expect(bst.leftNode.rightNode.value).toBe(4)
+        expect(bst.rightNode.value).toBe(9)
+        expect(bst.rightNode.rightNode.value).toBe(12)
+    })
+
+    test('Remove all the numbers from a BST data structure', () => {
+        const arrNumbers = [
+            6,
+            8,
+            9,
+            2,
+            5,
+            3,
+            7,
+            4,
+            1
+        ]
+        const bst = new BST(arrNumbers)
+
+        bst.removeMultiple(arrNumbers)
+        expect(bst.value).toBe(null)
+        expect(bst.leftNode).toBe(null)
+        expect(bst.rightNode).toBe(null)
     })
 
 })

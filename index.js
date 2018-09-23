@@ -1,4 +1,4 @@
-const Tree = require('./src/tree')
+const Tree = require('./build/tree')
 
 /**
  * @module tree

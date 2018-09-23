@@ -1,4 +1,4 @@
-const Node = require('./node')
+const Node = require('./node');
 
 /**
  * @public
@@ -15,4 +15,4 @@ class Tree extends Node {}
 /**
  * @module tree
  */
-module.exports = Tree
+module.exports = Tree;

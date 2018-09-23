@@ -1,4 +1,4 @@
-# binary-search-tree
+# nodejs-bst
 
 Library for binary search tree structures (BST) manipulation.
 

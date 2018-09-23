@@ -1,4 +1,4 @@
-// @flow
+
 
 /**
  * @protected
@@ -12,60 +12,50 @@
 class Node {
 
     /**
-     * @property {Node} [leftNode] Reference of the left hand child node
-     */
-    leftNode: ?Node
-
-    /**
-     * @property {Node} [parentNode] Reference of the predecessor node
-     */
-    parentNode: ?Node
-
-    /**
-     * @property {Node} [rightNode] Reference of the right hand child node
-     */
-    rightNode: ?Node
-
-    /**
-     * @property {number} [value] Current node value
-     */
-    value: ?number
-
-    /**
      * @constructor Node
      * @param {(number|number[])} [args] Single number, array of numbers or undefined value
      * to initialize structure with
      * @param {Node} [parent] Parent node of the instance
      */
-    constructor(args: ?number | number[], parent: ?Node) {
-        this.leftNode = null
-        this.parentNode = null
-        this.rightNode = null
-        this.value = null
+
+
+    /**
+     * @property {Node} [rightNode] Reference of the right hand child node
+     */
+
+
+    /**
+     * @property {Node} [leftNode] Reference of the left hand child node
+     */
+    constructor(args, parent) {
+        this.leftNode = null;
+        this.parentNode = null;
+        this.rightNode = null;
+        this.value = null;
 
         if (typeof args === 'number') {
-            this.value = args
-        }   else if (Array.isArray(args)) {
-            this.addMultiple(args)
-        }   else if (typeof args !== 'undefined') {
-            throw new Error('The passed argument to the Node constructor is not valid')
+            this.value = args;
+        } else if (Array.isArray(args)) {
+            this.addMultiple(args);
+        } else if (typeof args !== 'undefined') {
+            throw new Error('The passed argument to the Node constructor is not valid');
         }
 
         if (typeof parent !== 'undefined' && parent instanceof Node) {
-            this.parentNode = parent
+            this.parentNode = parent;
         }
 
-        this._appendNode = this._appendNode.bind(this)
-        this._hasChildNodes = this._hasChildNodes.bind(this)
-        this._removeChildNode = this._removeChildNode.bind(this)
-        this.addMultiple = this.addMultiple.bind(this)
-        this.addNumber = this.addNumber.bind(this)
-        this.hasNumber = this.hasNumber.bind(this)
-        this.inspect = this.inspect.bind(this)
-        this.removeMultiple = this.removeMultiple.bind(this)
-        this.removeNumber = this.removeNumber.bind(this)
-        this.toJson = this.toJson.bind(this)
-        this.toString = this.toString.bind(this)
+        this._appendNode = this._appendNode.bind(this);
+        this._hasChildNodes = this._hasChildNodes.bind(this);
+        this._removeChildNode = this._removeChildNode.bind(this);
+        this.addMultiple = this.addMultiple.bind(this);
+        this.addNumber = this.addNumber.bind(this);
+        this.hasNumber = this.hasNumber.bind(this);
+        this.inspect = this.inspect.bind(this);
+        this.removeMultiple = this.removeMultiple.bind(this);
+        this.removeNumber = this.removeNumber.bind(this);
+        this.toJson = this.toJson.bind(this);
+        this.toString = this.toString.bind(this);
     }
 
     /**
@@ -75,37 +65,47 @@ class Node {
      * @description Adds a node instance as child of the current node
      * @param {Node} node Instance of the Node class to be added
      */
-    _appendNode(node: Node) {
+
+
+    /**
+     * @property {number} [value] Current node value
+     */
+
+
+    /**
+     * @property {Node} [parentNode] Reference of the predecessor node
+     */
+    _appendNode(node) {
         if (typeof node == 'undefined' || !(node instanceof Node)) {
-            throw new Error('You must pass a node instance as argument to the _appendNode method')
+            throw new Error('You must pass a node instance as argument to the _appendNode method');
         }
 
         // Case when the root node was removed
         if (this.value === null) {
-            this.value = node.value
+            this.value = node.value;
             if (node.rightNode !== null) {
-                this._appendNode(node.rightNode)
+                this._appendNode(node.rightNode);
             }
             if (node.leftNode !== null) {
-                this._appendNode(node.leftNode)
+                this._appendNode(node.leftNode);
             }
-            return
+            return;
         }
 
         if (node.value < this.value) {
             if (this.leftNode === null) {
-                this.leftNode = node
-                return
+                this.leftNode = node;
+                return;
             }
-            this.leftNode._appendNode(node)
-            return
-        }   else if (node.value > this.value) {
+            this.leftNode._appendNode(node);
+            return;
+        } else if (node.value > this.value) {
             if (this.rightNode === null) {
-                this.rightNode = node
-                return
+                this.rightNode = node;
+                return;
             }
-            this.rightNode._appendNode(node)
-            return
+            this.rightNode._appendNode(node);
+            return;
         }
     }
 
@@ -116,11 +116,11 @@ class Node {
      * @description Check if the current node has child nodes
      * @returns {boolean}
      */
-    _hasChildNodes(): boolean {
+    _hasChildNodes() {
         if (this.leftNode !== null || this.rightNode !== null) {
-            return true
+            return true;
         }
-        return false
+        return false;
     }
 
     /**
@@ -130,20 +130,20 @@ class Node {
      * @description Removes a child node from the current node if it does exist
      * @param {Node} node Node instance to be removed
      */
-    _removeChildNode(node: Node) {
+    _removeChildNode(node) {
         if (typeof node === 'undefined' || !(node instanceof Node)) {
-            throw new Error('You must pass a node instance as argument to the _removeChildNode method')
+            throw new Error('You must pass a node instance as argument to the _removeChildNode method');
         }
 
         if (this.leftNode !== null && node.value === this.leftNode.value) {
             if (this.leftNode !== null && this.leftNode.value === node.value) {
-                this.leftNode = null
-                return
+                this.leftNode = null;
+                return;
             }
-        }   else if (this.rightNode !== null && node.value === this.rightNode.value) {
+        } else if (this.rightNode !== null && node.value === this.rightNode.value) {
             if (this.rightNode !== null && this.rightNode.value === node.value) {
-                this.rightNode = null
-                return
+                this.rightNode = null;
+                return;
             }
         }
     }
@@ -154,13 +154,13 @@ class Node {
      * @description Add multiple numbers to the current data structure
      * @param {number[]} arrNumbers Array of numbers to be added to the structure
      */
-    addMultiple(arrNumbers: number[]) {
+    addMultiple(arrNumbers) {
         if (!Array.isArray(arrNumbers)) {
-            throw new Error('You must pass an array to the addMultiple function')
+            throw new Error('You must pass an array to the addMultiple function');
         }
 
         for (let i = 0; i < arrNumbers.length; i++) {
-            this.addNumber(arrNumbers[i])
+            this.addNumber(arrNumbers[i]);
         }
     }
 
@@ -170,34 +170,34 @@ class Node {
      * @description Add a single number to the current data structure
      * @param {number} number Value to be added to the structure
      */
-    addNumber(number: number) {
+    addNumber(number) {
         if (typeof number !== 'number') {
-            throw new Error('You must pass a number to the addNumber function')
+            throw new Error('You must pass a number to the addNumber function');
         }
 
         // Set the initial value of the node if it is null
         if (this.value === null) {
-            this.value = number
-            return
+            this.value = number;
+            return;
         }
 
         // Values cannot get duplicated in the structure
         if (this.value === number) {
-            return
+            return;
         }
 
         if (number < this.value) {
             if (this.leftNode === null) {
-                this.leftNode = new Node(number, this)
-                return
+                this.leftNode = new Node(number, this);
+                return;
             }
-            this.leftNode.addNumber(number)
-        }   else {
+            this.leftNode.addNumber(number);
+        } else {
             if (this.rightNode === null) {
-                this.rightNode = new Node(number, this)
-                return
+                this.rightNode = new Node(number, this);
+                return;
             }
-            this.rightNode.addNumber(number)
+            this.rightNode.addNumber(number);
         }
     }
 
@@ -208,25 +208,25 @@ class Node {
      * @param {number} number Number to search in the data structure
      * @returns {boolean}
      */
-    hasNumber(number: number): boolean {
+    hasNumber(number) {
         if (typeof number !== 'number') {
-            throw new Error('You must pass a number to the hasNumber function')
+            throw new Error('You must pass a number to the hasNumber function');
         }
 
         if (this.value === number) {
-            return true
+            return true;
         }
 
         if (number < this.value) {
             if (this.leftNode === null) {
-                return false
+                return false;
             }
-            return this.leftNode.hasNumber(number)
-        }   else {
+            return this.leftNode.hasNumber(number);
+        } else {
             if (this.rightNode === null) {
-                return false
+                return false;
             }
-            return this.rightNode.hasNumber(number)
+            return this.rightNode.hasNumber(number);
         }
     }
 
@@ -237,8 +237,8 @@ class Node {
      * @returns {string}
      * @override
      */
-    inspect(): string {
-        return this.toString()
+    inspect() {
+        return this.toString();
     }
 
     /**
@@ -247,13 +247,13 @@ class Node {
      * @description Removes multiple numbers from the current data structure
      * @param {number[]} arrNumbers Array of numbers to be removed from the structure
      */
-    removeMultiple(arrNumbers: number[]) {
+    removeMultiple(arrNumbers) {
         if (!Array.isArray(arrNumbers)) {
-            throw new Error('You must pass an array to the removeMultiple function')
+            throw new Error('You must pass an array to the removeMultiple function');
         }
-        
+
         for (let i = 0; i < arrNumbers.length; i++) {
-            this.removeNumber(arrNumbers[i])
+            this.removeNumber(arrNumbers[i]);
         }
     }
 
@@ -263,43 +263,43 @@ class Node {
      * @description Removes a single number from the current data structure
      * @param {number} number Number to be removed from the structure
      */
-    removeNumber(number: number) {
+    removeNumber(number) {
         if (typeof number !== 'number') {
-            throw new Error('You must pass a number to the removeNumber function')
+            throw new Error('You must pass a number to the removeNumber function');
         }
 
         if (!this.hasNumber(number)) {
-            return
+            return;
         }
 
         if (this.value === number) {
-            const clone = Object.assign(new Node(), this)
+            const clone = Object.assign(new Node(), this);
 
-            this.value = null
+            this.value = null;
 
             if (!this._hasChildNodes()) {
-                return
+                return;
             }
 
             if (clone.rightNode !== null) {
-                this._removeChildNode(clone.rightNode)
-                this._appendNode(clone.rightNode)
+                this._removeChildNode(clone.rightNode);
+                this._appendNode(clone.rightNode);
             }
             if (clone.leftNode !== null) {
-                this._removeChildNode(clone.leftNode)
-                this._appendNode(clone.leftNode)
+                this._removeChildNode(clone.leftNode);
+                this._appendNode(clone.leftNode);
             }
-            return
+            return;
         }
 
         if (number < this.value) {
-            this.leftNode.removeNumber(number)
-            return
+            this.leftNode.removeNumber(number);
+            return;
         }
 
         if (number > this.value) {
-            this.rightNode.removeNumber(number)
-            return
+            this.rightNode.removeNumber(number);
+            return;
         }
     }
 
@@ -309,43 +309,34 @@ class Node {
      * @description Returns a JSON object with the current structure data
      * @returns {Object}
      */
-    toJson(): Object {
+    toJson() {
         if (this.value === null) {
-            return {}
+            return {};
         }
 
         if (this.leftNode === null && this.rightNode === null) {
-            return {'value': this.value}
+            return { 'value': this.value };
         }
 
         if (this.leftNode !== null && this.rightNode === null) {
             return {
-                'children': [
-                    this.leftNode.toJson(),
-                    null
-                ],
+                'children': [this.leftNode.toJson(), null],
                 'value': this.value
-            }
+            };
         }
 
         if (this.leftNode === null && this.rightNode !== null) {
             return {
-                'children': [
-                    null,
-                    this.rightNode.toJson()
-                ],
+                'children': [null, this.rightNode.toJson()],
                 'value': this.value
-            }
+            };
         }
 
         if (this.leftNode !== null && this.rightNode !== null) {
             return {
-                'children': [
-                    this.leftNode.toJson(),
-                    this.rightNode.toJson()
-                ],
+                'children': [this.leftNode.toJson(), this.rightNode.toJson()],
                 'value': this.value
-            }
+            };
         }
     }
 
@@ -356,25 +347,25 @@ class Node {
      * @returns {string}
      * @override
      */
-    toString(): string {
+    toString() {
         if (this.value === null) {
-            return '{}'
+            return '{}';
         }
 
         if (this.leftNode === null && this.rightNode === null) {
-            return `{ ${this.value} }`
+            return `{ ${this.value} }`;
         }
 
         if (this.leftNode !== null && this.rightNode === null) {
-            return `{ ${this.value}: ${this.leftNode}, {} }`
+            return `{ ${this.value}: ${this.leftNode}, {} }`;
         }
 
         if (this.leftNode === null && this.rightNode !== null) {
-            return `{ ${this.value}: {}, ${this.rightNode} }`
+            return `{ ${this.value}: {}, ${this.rightNode} }`;
         }
 
         if (this.leftNode !== null && this.rightNode !== null) {
-            return `{ ${this.value}: ${this.leftNode}, ${this.rightNode} }`
+            return `{ ${this.value}: ${this.leftNode}, ${this.rightNode} }`;
         }
     }
 
@@ -384,25 +375,25 @@ class Node {
      * @description Returns a XML string with the current structure data
      * @returns {string}
      */
-    toXml(): string {
+    toXml() {
         if (this.value === null) {
-            return '<node></node>'
+            return '<node></node>';
         }
 
         if (this.leftNode === null && this.rightNode === null) {
-            return `<node><value>${this.value}</value></node>`
+            return `<node><value>${this.value}</value></node>`;
         }
 
         if (this.leftNode !== null && this.rightNode === null) {
-            return `<node><children>${this.leftNode.toXml()}<node></node></children><value>${this.value}</value></node>`
+            return `<node><children>${this.leftNode.toXml()}<node></node></children><value>${this.value}</value></node>`;
         }
 
         if (this.leftNode === null && this.rightNode !== null) {
-            return `<node><children><node></node>${this.rightNode.toXml()}</children><value>${this.value}</value></node>`
+            return `<node><children><node></node>${this.rightNode.toXml()}</children><value>${this.value}</value></node>`;
         }
 
         if (this.leftNode !== null && this.rightNode !== null) {
-            return `<node><children>${this.leftNode.toXml()}${this.rightNode.toXml()}</children><value>${this.value}</value></node>`
+            return `<node><children>${this.leftNode.toXml()}${this.rightNode.toXml()}</children><value>${this.value}</value></node>`;
         }
     }
 
@@ -411,4 +402,4 @@ class Node {
 /**
  * @module node
  */
-module.exports = Node
+module.exports = Node;

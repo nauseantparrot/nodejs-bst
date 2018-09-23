@@ -1,19 +1,41 @@
 {
-  "name": "binary-search-tree",
-  "version": "1.0.0",
+  "name": "nodejs-bst",
+  "version": "1.0.1",
   "description": "Library for binary search tree structures (BST) manipulation",
   "main": "index.js",
-  "repository": "https://github.com/nickogar97/binary-search-tree.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nickogar97/nodejs-bst.git"
+  },
   "author": {
     "name": "Nickolas Garcia",
     "email": "gfelipenickolas@gmail.com"
   },
+  "maintainers": [
+    {
+      "name": "Nickolas Garcia",
+      "email": "gfelipenickolas@gmail.com"
+    }
+  ],
+  "keywords": [
+    "data-structures",
+    "javascript-library",
+    "binary-search-tree"
+  ],
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "babel src/ -d build/",
+    "prepublish": "yarn run build"
   },
   "license": "MIT",
   "private": false,
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^9.0.0",
+    "babel-preset-flow": "^6.23.0",
+    "eslint": "^5.6.0",
+    "eslint-plugin-flowtype": "^2.50.1",
+    "flow-bin": "^0.81.0",
     "jest": "^23.6.0"
   }
 }

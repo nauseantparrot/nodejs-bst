@@ -1,5 +1,89 @@
 # nodejs-bst
 
-Library for binary search tree structures (BST) manipulation.
+A fast and simple library for binary search tree data structures (BST) manipulation.
 
-[![Build Status](https://travis-ci.org/nickogar97/binary-search-tree.svg?branch=master)](https://travis-ci.org/nickogar97/binary-search-tree)
+[![Build Status](https://travis-ci.org/nickogar97/nodejs-bst.svg?branch=master)](https://travis-ci.org/nickogar97/nodejs-bst)
+
+## Instalation
+
+To install the latest version using yarn:
+```
+yarn add nodejs-bst
+```
+Using npm:
+```
+npm install --save nodejs-bst
+```
+
+## The Gist
+
+### Instantiation
+
+```javascript
+// Import module
+const BST = require('nodejs-bst')
+
+// Success
+const emptyBst = new BST() // {}
+const singleBst = new BST(7) // { 7: [] }
+const multiBst = new BST([3, 6, 1, 9]) // { 3: [ { 1: [] }, { 6: [ {}, { 9: [] } ] } ] }
+
+// Failure
+const errBst1 = new BST('foo') // Error: The passed argument to the Node constructor is not valid
+const errBst2 = new BST([3, 'foo']) // Error: You must pass a number to the addNumber function
+```
+
+### Append
+
+```javascript
+// Import module
+const BST = require('nodejs-bst')
+
+const bst = new BST()
+
+// Success
+bst.addNumber(4) // { 4: [] }
+bst.addMultiple([3, 7]) // { 4: [ { 3: [] }, { 7, [] } ] }
+
+// Failure
+bst.addNumber() // Error: You must pass a number to the addNumber function
+bst.addNumber('foo') // Error: You must pass a number to the addNumber function
+bst.addMultiple() // Error: You must pass an array to the addMultiple function
+bst.addMultiple(['foo', 'bar']) // Error: You must pass a number to the addNumber function
+```
+
+### Removal
+
+```javascript
+// Import module
+const BST = require('nodejs-bst')
+
+const bst = new BST([5, 2, 1, 7, 9]) // { 5: [ { 2: [ { 1: [] }, {} ] }, { 7: [ {}, { 9: [] } ] } ] }
+
+// Success
+bst.removeNumber(2) // { 5: [ { 1: [] }, { 7: [ {}, { 9: [] } ] } ] }
+bst.removeMultiple([5, 7]) // { 9: [ { 1: [] }, {} ] }
+
+// Failure
+bst.removeNumber() // Error: You must pass a number to the removeNumber function
+bst.removeNumber('foo') // Error: You must pass a number to the removeNumber function
+bst.removeMultiple() // Error: You must pass an array to the removeMultiple function
+bst.removeMultiple([4, 'bar']) // Error: You must pass a number to the removeNumber function
+```
+
+### Check
+
+```javascript
+// Import module
+const BST = require('nodejs-bst')
+
+const bst = new BST(4)
+
+// Success
+bst.hasNumber(7) // False
+bst.hasNumber(4) // True
+
+// Failure
+bst.hasNumber() // Error: You must pass a number to the hasNumber function
+bst.hasNumber('foo') // Error: You must pass a number to the hasNumber function
+```

@@ -6,8 +6,10 @@
  * @name Node
  * @description Represents each node in the binary search tree data structure
  * @author Nickolas Garcia <gfelipenickolas@gmail.com>
- * @version 1.0.0
+ * @version 1.0.2
  * @since 1.0.0
+ * @todo Add support for multiple arguments
+ * @todo Add order methods (inorden, preorden, postorden)
  */
 class Node {
 
@@ -62,6 +64,7 @@ class Node {
         this.addNumber = this.addNumber.bind(this)
         this.hasNumber = this.hasNumber.bind(this)
         this.inspect = this.inspect.bind(this)
+        this.isFullBinary = this.isFullBinary.bind(this)
         this.removeMultiple = this.removeMultiple.bind(this)
         this.removeNumber = this.removeNumber.bind(this)
         this.toJson = this.toJson.bind(this)
@@ -202,6 +205,22 @@ class Node {
     }
 
     /**
+     * @static
+     * @function
+     * @name clone
+     * @description Returns a clone of a Node object
+     * @param {Node} node Node object to clone
+     * @returns {Node}
+     */
+    static clone(node: Node): Node {
+        if (typeof node === 'undefined' || !(node instanceof Node)) {
+            throw new Error('You must pass a Node object to the clone function')
+        }
+
+        return Object.assign(new Node(), node)
+    }
+
+    /**
      * @function
      * @name hasNumber
      * @description Check if the current data structure has a number
@@ -242,6 +261,22 @@ class Node {
     }
 
     /**
+     * @function
+     * @name isFullBinary
+     * @description Check if the structure is a full binary search tree
+     */
+    isFullBinary(): boolean {
+        if (this.leftNode === null && this.rightNode === null) {
+            return true
+        }
+        
+        if (this.leftNode !== null && this.rightNode !== null) {
+            return this.leftNode.isFullBinary() && this.rightNode.isFullBinary()
+        }
+        return false
+    }
+
+    /**
      * @method
      * @name removeMultiple
      * @description Removes multiple numbers from the current data structure
@@ -273,7 +308,7 @@ class Node {
         }
 
         if (this.value === number) {
-            const clone = Object.assign(new Node(), this)
+            const clone = Node.clone(this)
 
             this.value = null
 

@@ -169,3 +169,32 @@ describe('Binary search tree (BST) data structure manipulation testing', () => {
     })
 
 })
+
+describe('Binary search tree (BST) full binary checking', () => {
+
+    test('Check if a full binary search tree (BST) is checked as true', () => {
+        const bst = new BST([
+            5,
+            2,
+            1,
+            3,
+            8,
+            6,
+            9
+        ])
+
+        expect(bst.isFullBinary()).toBe(true)
+    })
+
+    test('Check if a no-full binary search tree (BST) is checked as false', () => {
+        const bst = new BST([
+            7,
+            4,
+            2,
+            8
+        ])
+
+        expect(bst.isFullBinary()).toBe(false)
+    })
+
+})

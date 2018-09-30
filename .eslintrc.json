@@ -37,7 +37,7 @@
             "error",
             "always"
         ],
-        "class-methods-use-this": "off",
+        "class-methods-use-this": "error",
         "comma-dangle": "error",
         "comma-spacing": [
             "error",
@@ -62,7 +62,7 @@
             "error",
             "never"
         ],
-        "eqeqeq": "off",
+        "eqeqeq": "error",
         "flowtype/boolean-style": [
             2,
             "boolean"
@@ -108,7 +108,7 @@
         "guard-for-in": "error",
         "handle-callback-err": "error",
         "id-blacklist": "error",
-        "id-length": "off",
+        "id-length": "error",
         "id-match": "error",
         "implicit-arrow-linebreak": "error",
         "indent": "error",
@@ -151,7 +151,7 @@
             "error",
             "always"
         ],
-        "newline-before-return": "off",
+        "newline-before-return": "error",
         "newline-per-chained-call": "error",
         "no-alert": "error",
         "no-array-constructor": "error",
@@ -165,7 +165,7 @@
         "no-continue": "error",
         "no-div-regex": "error",
         "no-duplicate-imports": "error",
-        "no-else-return": "off",
+        "no-else-return": "error",
         "no-empty-function": "error",
         "no-eq-null": "error",
         "no-eval": "error",
@@ -190,7 +190,7 @@
         "no-mixed-operators": "error",
         "no-mixed-requires": "error",
         "no-multi-assign": "error",
-        "no-multi-spaces": "off",
+        "no-multi-spaces": "error",
         "no-multi-str": "error",
         "no-multiple-empty-lines": "error",
         "no-native-reassign": "error",
@@ -246,7 +246,7 @@
         "no-useless-concat": "error",
         "no-useless-constructor": "error",
         "no-useless-rename": "error",
-        "no-useless-return": "off",
+        "no-useless-return": "error",
         "no-var": "error",
         "no-void": "error",
         "no-warning-comments": "error",
@@ -257,7 +257,7 @@
         "object-curly-spacing": "error",
         "object-property-newline": "error",
         "object-shorthand": "error",
-        "one-var": "off",
+        "one-var": "error",
         "one-var-declaration-per-line": "error",
         "operator-assignment": "error",
         "operator-linebreak": "error",
@@ -297,7 +297,7 @@
         "sort-keys": "error",
         "sort-vars": "error",
         "space-before-blocks": "error",
-        "space-before-function-paren": "off",
+        "space-before-function-paren": "error",
         "space-in-parens": [
             "error",
             "never"
@@ -320,7 +320,7 @@
             "error",
             "never"
         ],
-        "valid-jsdoc": "off",
+        "valid-jsdoc": "error",
         "vars-on-top": "error",
         "wrap-iife": "error",
         "wrap-regex": "error",

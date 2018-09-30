@@ -1,3 +1,5 @@
+// @flow
+
 const Node = require('./node')
 
 /**

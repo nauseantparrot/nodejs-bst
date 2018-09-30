@@ -11,21 +11,20 @@ describe('Binary search tree (BST) data structure instance testing', () => {
     })
 
     test('Initialize a binary search tree with a single number', () => {
-        const rndNumber = Math.round(Math.random() * 100)
-        const bst = new BST(rndNumber)
+        const anyNumber = Math.round(Math.random() * 100),
+            bst = new BST(anyNumber)
 
-        expect(bst.value).toBe(rndNumber)
+        expect(bst.value).toBe(anyNumber)
         expect(bst.leftNode).toBe(null)
         expect(bst.rightNode).toBe(null)
     })
 
     test('Initialize a binary search tree with an array of numbers', () => {
-        const arrNumbers = [
+        const bst = new BST([
             3,
             1,
             7
-        ]
-        const bst = new BST(arrNumbers)
+        ])
 
         expect(bst.value).toBe(3)
         expect(bst.leftNode.value).toBe(1)
@@ -78,16 +77,16 @@ describe('Binary search tree (BST) data structure manipulation testing', () => {
     })
 
     test('Add multiple numbers to a BST using an Array', () => {
-        const bst = new BST()
-        const arrNumbers = [
-            3,
-            6,
-            9,
-            2,
-            12
-        ]
+        const bst = new BST(),
+            numbers = [
+                3,
+                6,
+                9,
+                2,
+                12
+            ]
 
-        bst.addMultiple(arrNumbers)
+        bst.addMultiple(numbers)
         expect(bst.value).toBe(3)
         expect(bst.rightNode.value).toBe(6)
         expect(bst.rightNode.rightNode.value).toBe(9)
@@ -149,7 +148,7 @@ describe('Binary search tree (BST) data structure manipulation testing', () => {
     })
 
     test('Remove all the numbers from a BST data structure', () => {
-        const arrNumbers = [
+        const bst = new BST([
             6,
             8,
             9,
@@ -159,10 +158,127 @@ describe('Binary search tree (BST) data structure manipulation testing', () => {
             7,
             4,
             1
-        ]
-        const bst = new BST(arrNumbers)
+        ])
 
-        bst.removeMultiple(arrNumbers)
+        expect(bst.value).toBe(6)
+        expect(bst.leftNode.value).toBe(2)
+        expect(bst.leftNode.leftNode.value).toBe(1)
+        expect(bst.leftNode.rightNode.value).toBe(5)
+        expect(bst.leftNode.rightNode.leftNode.value).toBe(3)
+        expect(bst.leftNode.rightNode.leftNode.rightNode.value).toBe(4)
+        expect(bst.rightNode.value).toBe(8)
+        expect(bst.rightNode.leftNode.value).toBe(7)
+        expect(bst.rightNode.rightNode.value).toBe(9)
+        // Check parents
+        expect(bst.parentNode).toBe(null)
+        expect(bst.leftNode.parentNode.value).toBe(6)
+        expect(bst.leftNode.leftNode.parentNode.value).toBe(2)
+        expect(bst.leftNode.rightNode.parentNode.value).toBe(2)
+        expect(bst.leftNode.rightNode.leftNode.parentNode.value).toBe(5)
+        expect(bst.leftNode.rightNode.leftNode.rightNode.parentNode.value).toBe(3)
+        expect(bst.rightNode.parentNode.value).toBe(6)
+        expect(bst.rightNode.leftNode.parentNode.value).toBe(8)
+        expect(bst.rightNode.rightNode.parentNode.value).toBe(8)
+        // Remove 6
+        bst.removeNumber(6)
+        expect(bst.value).toBe(8)
+        expect(bst.leftNode.value).toBe(2)
+        expect(bst.leftNode.leftNode.value).toBe(1)
+        expect(bst.leftNode.rightNode.value).toBe(5)
+        expect(bst.leftNode.rightNode.leftNode.value).toBe(3)
+        expect(bst.leftNode.rightNode.leftNode.rightNode.value).toBe(4)
+        expect(bst.leftNode.rightNode.rightNode.value).toBe(7)
+        expect(bst.rightNode.value).toBe(9)
+        // Check parents
+        expect(bst.parentNode).toBe(null)
+        expect(bst.leftNode.parentNode.value).toBe(8)
+        expect(bst.leftNode.leftNode.parentNode.value).toBe(2)
+        expect(bst.leftNode.rightNode.parentNode.value).toBe(2)
+        expect(bst.leftNode.rightNode.leftNode.parentNode.value).toBe(5)
+        expect(bst.leftNode.rightNode.leftNode.rightNode.parentNode.value).toBe(3)
+        expect(bst.leftNode.rightNode.rightNode.parentNode.value).toBe(5)
+        expect(bst.rightNode.parentNode.value).toBe(8)
+        // Remove 8
+        bst.removeNumber(8)
+        expect(bst.value).toBe(9)
+        expect(bst.leftNode.value).toBe(2)
+        expect(bst.leftNode.leftNode.value).toBe(1)
+        expect(bst.leftNode.rightNode.value).toBe(5)
+        expect(bst.leftNode.rightNode.leftNode.value).toBe(3)
+        expect(bst.leftNode.rightNode.leftNode.rightNode.value).toBe(4)
+        expect(bst.leftNode.rightNode.rightNode.value).toBe(7)
+        // Check parents
+        expect(bst.parentNode).toBe(null)
+        expect(bst.leftNode.parentNode.value).toBe(9)
+        expect(bst.leftNode.leftNode.parentNode.value).toBe(2)
+        expect(bst.leftNode.rightNode.parentNode.value).toBe(2)
+        expect(bst.leftNode.rightNode.leftNode.parentNode.value).toBe(5)
+        expect(bst.leftNode.rightNode.leftNode.rightNode.parentNode.value).toBe(3)
+        expect(bst.leftNode.rightNode.rightNode.parentNode.value).toBe(5)
+        // Remove 9
+        bst.removeNumber(9)
+        expect(bst.value).toBe(2)
+        expect(bst.leftNode.value).toBe(1)
+        expect(bst.rightNode.value).toBe(5)
+        expect(bst.rightNode.leftNode.value).toBe(3)
+        expect(bst.rightNode.rightNode.value).toBe(7)
+        expect(bst.rightNode.leftNode.rightNode.value).toBe(4)
+        // Check parents
+        expect(bst.parentNode).toBe(null)
+        expect(bst.leftNode.parentNode.value).toBe(2)
+        expect(bst.rightNode.parentNode.value).toBe(2)
+        expect(bst.rightNode.leftNode.parentNode.value).toBe(5)
+        expect(bst.rightNode.rightNode.parentNode.value).toBe(5)
+        expect(bst.rightNode.leftNode.rightNode.parentNode.value).toBe(3)
+        // Remove 2
+        bst.removeNumber(2)
+        expect(bst.value).toBe(5)
+        expect(bst.rightNode.value).toBe(7)
+        expect(bst.leftNode.value).toBe(1)
+        expect(bst.leftNode.rightNode.value).toBe(3)
+        expect(bst.leftNode.rightNode.rightNode.value).toBe(4)
+        // Check parents
+        expect(bst.parentNode).toBe(null)
+        expect(bst.rightNode.parentNode.value).toBe(5)
+        expect(bst.leftNode.parentNode.value).toBe(5)
+        expect(bst.leftNode.rightNode.parentNode.value).toBe(1)
+        expect(bst.leftNode.rightNode.rightNode.parentNode.value).toBe(3)
+        // Remove 5
+        bst.removeNumber(5)
+        expect(bst.value).toBe(7)
+        expect(bst.leftNode.value).toBe(1)
+        expect(bst.leftNode.rightNode.value).toBe(3)
+        expect(bst.leftNode.rightNode.rightNode.value).toBe(4)
+        // Check parents
+        expect(bst.parentNode).toBe(null)
+        expect(bst.leftNode.parentNode.value).toBe(7)
+        expect(bst.leftNode.rightNode.parentNode.value).toBe(1)
+        expect(bst.leftNode.rightNode.rightNode.parentNode.value).toBe(3)
+        // Remove 7
+        bst.removeNumber(7)
+        expect(bst.value).toBe(1)
+        expect(bst.rightNode.value).toBe(3)
+        expect(bst.rightNode.rightNode.value).toBe(4)
+        // Check parents
+        expect(bst.parentNode).toBe(null)
+        expect(bst.rightNode.parentNode.value).toBe(1)
+        expect(bst.rightNode.rightNode.parentNode.value).toBe(3)
+        // Remove 1
+        bst.removeNumber(1)
+        expect(bst.value).toBe(3)
+        expect(bst.rightNode.value).toBe(4)
+        // Check parents
+        expect(bst.parentNode).toBe(null)
+        expect(bst.rightNode.parentNode.value).toBe(3)
+        // Remove 3
+        bst.removeNumber(3)
+        expect(bst.value).toBe(4)
+        expect(bst.leftNode).toBe(null)
+        expect(bst.rightNode).toBe(null)
+        // Check parent
+        expect(bst.parentNode).toBe(null)
+        // Remove 4
+        bst.removeNumber(4)
         expect(bst.value).toBe(null)
         expect(bst.leftNode).toBe(null)
         expect(bst.rightNode).toBe(null)

@@ -8,8 +8,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
  * @author Nickolas Garcia <gfelipenickolas@gmail.com>
  * @version 1.0.3
  * @since 1.0.0
- * @todo Add support for multiple arguments
- * @todo Add order methods (inorden, preorden, postorden)
+ * @todo Add order methods (preorden, postorden)
  */
 class Node {
 
@@ -21,12 +20,12 @@ class Node {
 
 
     /**
-     * @property {Node} [rightNode] Reference of the right hand child node
+     * @property {number} [value] Current node value
      */
 
 
     /**
-     * @property {Node} [leftNode] Reference of the left hand child node
+     * @property {Node} [parentNode] Reference of the predecessor node
      */
     constructor(args, parent) {
         this.leftNode = null;
@@ -34,7 +33,7 @@ class Node {
         this.rightNode = null;
         this.value = null;
 
-        if (typeof args !== 'undefined' && args !== null) {
+        if (args != null) {
             if (typeof args === 'number') {
                 this.value = args;
             } else if (Array.isArray(args)) {
@@ -43,7 +42,7 @@ class Node {
                 throw new Error('Node constructor argument must be a single or array of numbers');
             }
         }
-        if (typeof parent !== 'undefined' && parent !== null) {
+        if (parent != null) {
             if (!(parent instanceof Node)) {
                 throw new Error('Node constructor parent argument must be a node object');
             }
@@ -62,6 +61,7 @@ class Node {
         // Public functions
         this.addMultiple = this.addMultiple.bind(this);
         this.addNumber = this.addNumber.bind(this);
+        this.getInorderPath = this.getInorderPath.bind(this);
         this.hasNumber = this.hasNumber.bind(this);
         this.isFullBinary = this.isFullBinary.bind(this);
         this.removeMultiple = this.removeMultiple.bind(this);
@@ -79,30 +79,27 @@ class Node {
 
 
     /**
-     * @property {number} [value] Current node value
+     * @property {Node} [rightNode] Reference of the right hand child node
      */
 
 
     /**
-     * @property {Node} [parentNode] Reference of the predecessor node
+     * @property {Node} [leftNode] Reference of the left hand child node
      */
     _appendChild(node) {
         const { leftNode, rightNode, value } = this;
 
         // Validate node argument
-        if (!(typeof node !== 'undefined' && node !== null)) {
-            throw new Error('The _appendChild method argument must not be empty');
-        }
         if (!(node instanceof Node)) {
-            throw new Error('The _appendChild method argument must be a node object');
+            throw new Error('The _appendChild method argument must not be empty');
         }
 
         // Case when the node object value is empty
-        if (!(typeof node.value !== 'undefined' && node.value !== null)) {
+        if (node.value == null) {
             return;
         }
         // Case when the current node value is empty
-        if (!(typeof value !== 'undefined' && value !== null)) {
+        if (value == null) {
             throw new Error('A node object can not be appended as a child to a node without value');
         }
         // Case when the node value is equal to the current node value
@@ -111,7 +108,7 @@ class Node {
         }
 
         if (node.value < value) {
-            if (!(typeof leftNode !== 'undefined' && leftNode !== null)) {
+            if (leftNode == null) {
                 this.leftNode = node;
                 this.leftNode._updateParent(this);
 
@@ -124,7 +121,7 @@ class Node {
             return;
         }
         if (node.value > value) {
-            if (!(typeof rightNode !== 'undefined' && rightNode !== null)) {
+            if (rightNode == null) {
                 this.rightNode = node;
                 this.rightNode._updateParent(this);
 
@@ -147,7 +144,7 @@ class Node {
     _appendNode(node) {
         const { value } = this;
 
-        if (!(typeof node !== 'undefined' && node !== null)) {
+        if (node == null) {
             throw new Error('The _appendNode method argument must not be empty');
         }
         if (!(node instanceof Node)) {
@@ -155,7 +152,7 @@ class Node {
         }
 
         // Case when the current node value is empty
-        if (!(typeof value !== 'undefined' && value !== null)) {
+        if (value == null) {
             this._setCurrentNode(node);
 
             return;
@@ -173,14 +170,14 @@ class Node {
     _hasChildNodes() {
         const { leftNode, rightNode } = this;
 
-        if (typeof leftNode !== 'undefined' && leftNode !== null) {
+        if (leftNode != null) {
             if (leftNode instanceof Node) {
                 return true;
             }
             throw new Error('The children of a node must be node objects');
         }
 
-        if (typeof rightNode !== 'undefined' && rightNode !== null) {
+        if (rightNode != null) {
             if (rightNode instanceof Node) {
                 return true;
             }
@@ -201,15 +198,12 @@ class Node {
     _removeChildNode(node) {
         const { leftNode, rightNode } = this;
 
-        if (!(typeof node !== 'undefined')) {
-            throw new Error('The _removeChildNode method argument must not be empty');
-        }
         if (!(node instanceof Node)) {
             throw new Error('The _removeChildNode method argument must be a node object');
         }
 
         // Current node value must not be compare because it is empty at this point
-        if (typeof leftNode !== 'undefined' && leftNode !== null) {
+        if (leftNode != null) {
             if (!(leftNode instanceof Node)) {
                 throw new Error('The children of a node must be node objects');
             }
@@ -222,7 +216,7 @@ class Node {
                 return clone;
             }
         }
-        if (typeof rightNode !== 'undefined' && rightNode !== null) {
+        if (rightNode != null) {
             if (!(rightNode instanceof Node)) {
                 throw new Error('The children of a node must be node objects');
             }
@@ -253,21 +247,21 @@ class Node {
             return;
         }
 
-        if (!(typeof clone !== 'undefined' && clone !== null)) {
+        if (clone == null) {
             throw new Error('An unexpected error had happened');
         }
 
-        if (typeof clone.rightNode !== 'undefined' && clone.rightNode !== null) {
+        if (clone.rightNode != null) {
             const removedNode = this._removeChildNode(clone.rightNode);
 
-            if (typeof removedNode !== 'undefined' && removedNode !== null) {
+            if (removedNode != null) {
                 this._appendNode(removedNode);
             }
         }
-        if (typeof clone.leftNode !== 'undefined' && clone.leftNode !== null) {
+        if (clone.leftNode != null) {
             const removedNode = this._removeChildNode(clone.leftNode);
 
-            if (typeof removedNode !== 'undefined' && removedNode !== null) {
+            if (removedNode != null) {
                 this._appendNode(removedNode);
             }
         }
@@ -282,19 +276,16 @@ class Node {
      * @returns {undefined}
      */
     _setCurrentNode(node) {
-        if (!(typeof node !== 'undefined' && node !== null)) {
-            throw new Error('The _setCurrentNode method argument must not be empty');
-        }
         if (!(node instanceof Node)) {
             throw new Error('The _setCurrentNode method argument must be a node object');
         }
 
         this.value = node.value;
 
-        if (typeof node.rightNode !== 'undefined' && node.rightNode !== null) {
+        if (node.rightNode != null) {
             this._appendNode(node.rightNode);
         }
-        if (typeof node.leftNode !== 'undefined' && node.leftNode !== null) {
+        if (node.leftNode != null) {
             this._appendNode(node.leftNode);
         }
     }
@@ -308,9 +299,6 @@ class Node {
      * @returns {undefined}
      */
     _updateParent(parent) {
-        if (!(typeof parent !== 'undefined' && parent !== null)) {
-            throw new Error('The _updateParent method argument must not be empty');
-        }
         if (!(parent instanceof Node)) {
             throw new Error('The _updateParent method argument must be a node object');
         }
@@ -342,15 +330,12 @@ class Node {
      * @returns {undefined}
      */
     addNumber(number) {
-        if (!(typeof number !== 'undefined' && number !== null)) {
-            throw new Error('The addNumber method argument can not be empty');
-        }
         if (typeof number !== 'number') {
             throw new Error('The addNumber method argument must be a number');
         }
 
         // Set the initial value of the node if it is null
-        if (!(typeof this.value !== 'undefined' && this.value !== null)) {
+        if (this.value == null) {
             this.value = number;
 
             return;
@@ -363,7 +348,7 @@ class Node {
 
         // Case when number is less than the current node value
         if (number < this.value) {
-            if (this.leftNode !== 'undefined' && this.leftNode !== null) {
+            if (this.leftNode != null) {
                 if (!(this.leftNode instanceof Node)) {
                     throw new Error('The children of a node must be node objects');
                 }
@@ -377,7 +362,7 @@ class Node {
             return;
         }
         // Else
-        if (this.rightNode !== 'undefined' && this.rightNode !== null) {
+        if (this.rightNode != null) {
             if (!(this.rightNode instanceof Node)) {
                 throw new Error('The children of a node must be node objects');
             }
@@ -398,9 +383,6 @@ class Node {
      * @returns {Node} Clone object
      */
     static clone(node) {
-        if (!(typeof node !== 'undefined' && node !== null)) {
-            throw new Error('The clone function argument can not be empty');
-        }
         if (!(node instanceof Node)) {
             throw new Error('The clone function argument must be a node object');
         }
@@ -408,10 +390,63 @@ class Node {
         return Object.assign(new Node(), _extends({}, node));
     }
 
+    getInorderPath(path = [], lastValue, lastIndex) {
+        // Validate current value
+        if (this.value == null) {
+            return [];
+        }
+        // Validate path type
+        if (!Array.isArray(path)) {
+            throw new Error('The getInorderPath function argument must be a an array');
+        }
+        // Case when a lastValue is passed
+        if (lastValue != null) {
+            // Case when the passed index is lower than the current one
+            if (lastValue < this.value) {
+                // Case when there is no lastIndex
+                if (lastIndex == null) {
+                    throw new Error('An unexpected error had happened');
+                }
+                if (this.leftNode != null && this.leftNode.value !== lastIndex) {
+                    return this.leftNode.getInorderPath(path, lastValue, this.value);
+                }
+                // Case when the rightNode is already set
+                if (this.rightNode != null) {
+                    return this.rightNode.getInorderPath([...path, this.value], this.value, this.value);
+                }
+                // Case when the parentNode is already set
+                if (this.parentNode != null) {
+                    return this.parentNode.getInorderPath([...path, this.value], this.value, this.value);
+                }
+                // Case when the parentNode have not been set yet
+                return path;
+            }
+            // Case when the lastValue is higher then the current one
+            if (lastValue > this.value) {
+                if (this.parentNode != null) {
+                    return this.parentNode.getInorderPath(path, lastValue, this.value);
+                }
+                // Case when the parentNode have not been set yet
+                return path;
+            }
+        }
+        // Case when a lastValue is not passed
+        if (this.leftNode != null) {
+            return this.leftNode.getInorderPath(path, lastValue, this.value);
+        }
+        // Case when the current rightNode is already set
+        if (this.rightNode != null) {
+            return this.rightNode.getInorderPath([...path, this.value], this.value, this.value);
+        }
+        // Case when the parentNode is already set
+        if (this.parentNode != null) {
+            return this.parentNode.getInorderPath([...path, this.value], this.value, this.value);
+        }
+        return [...path, this.value];
+    }
+
     /**
      * TODO
-     * getInorderPath(): number[] {}
-     * 
      * getPostorderPath(): number[] {}
      * 
      * getPreorderPath(): number[] {}
@@ -429,7 +464,7 @@ class Node {
             throw new Error('The hasNumber function argument must be a number');
         }
 
-        if (typeof this.value === 'undefined' || this.value === null) {
+        if (this.value == null) {
             return false;
         }
         if (this.value === number) {
@@ -438,7 +473,7 @@ class Node {
 
         // Case when number is less than the current node value
         if (number < this.value) {
-            if (this.leftNode !== 'undefined' && this.leftNode !== null) {
+            if (this.leftNode != null) {
                 if (!(this.leftNode instanceof Node)) {
                     throw new Error('The children of a node must be node objects');
                 }
@@ -449,7 +484,7 @@ class Node {
             return false;
         }
         // Else
-        if (!(typeof this.rightNode !== 'undefined' && this.rightNode !== null)) {
+        if (this.rightNode == null) {
             return false;
         }
         if (!(this.rightNode instanceof Node)) {
@@ -468,15 +503,15 @@ class Node {
     isFullBinary() {
         const { leftNode, rightNode, value } = this;
 
-        if (!(typeof value !== 'undefined' && value !== null)) {
+        if (value == null) {
             return false;
         }
 
-        if ((typeof leftNode === 'undefined' || leftNode === null) && (typeof rightNode === 'undefined' || rightNode === null)) {
+        if (leftNode == null && rightNode == null) {
             return true;
         }
 
-        if (typeof leftNode !== 'undefined' && leftNode !== null && typeof rightNode !== 'undefined' && rightNode !== null) {
+        if (leftNode != null && rightNode != null) {
 
             if (!(leftNode instanceof Node && rightNode instanceof Node)) {
                 throw new Error('The children of a node must be node objects');
@@ -515,9 +550,6 @@ class Node {
     removeNumber(number) {
         const { leftNode, rightNode, value } = this;
 
-        if (!(typeof number !== 'undefined' && number !== null)) {
-            throw new Error('The removeNumber method argument can not be empty');
-        }
         if (typeof number !== 'number') {
             throw new Error('The removeNumber method argument must be a number');
         }
@@ -540,14 +572,14 @@ class Node {
 
         // Case when the number is less than the current node value
         if (number < value) {
-            if (typeof leftNode !== 'undefined' && leftNode !== null) {
+            if (leftNode != null) {
                 leftNode.removeNumber(number);
 
                 return;
             }
         }
         // Else
-        if (typeof rightNode !== 'undefined' && rightNode !== null) {
+        if (rightNode != null) {
             rightNode.removeNumber(number);
         }
     }

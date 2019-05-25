@@ -314,3 +314,31 @@ describe('Binary search tree (BST) full binary checking', () => {
     })
 
 })
+
+describe('Binary search tree (BST) data structure paths testing', () => {
+
+    test('Check data structure inorder path', () => {
+        const dataset = [
+            Math.round(Math.random() * 100),
+            Math.round(Math.random() * 100),
+            Math.round(Math.random() * 100),
+            Math.round(Math.random() * 100),
+            Math.round(Math.random() * 100),
+            Math.round(Math.random() * 100),
+            Math.round(Math.random() * 100),
+            Math.round(Math.random() * 100),
+            Math.round(Math.random() * 100),
+            Math.round(Math.random() * 100),
+            Math.round(Math.random() * 100)
+        ]
+
+        const bst = new BST(dataset)
+
+        expect(bst.getInorderPath()).toEqual([...new Set(dataset)].sort((a, b) => {
+            if (a < b) { return -1 }
+            if (a > b) { return 1 }
+            if (a === b) { return 0 }
+        }))
+    })
+
+})

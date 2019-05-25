@@ -2,7 +2,7 @@
 
 A fast and simple library for binary search tree data structures (BST) manipulation.
 
-[![Build Status](https://travis-ci.org/nickogar97/nodejs-bst.svg?branch=master)](https://travis-ci.org/nickogar97/nodejs-bst)
+[![Build Status](https://travis-ci.org/nauseantparrot/nodejs-bst.svg?branch=master)](https://travis-ci.org/nauseantparrot/nodejs-bst)
 [![npm version](https://img.shields.io/npm/v/nodejs-bst.svg?style=flat-square)](https://www.npmjs.com/package/nodejs-bst)
 [![npm downloads](https://img.shields.io/npm/dm/nodejs-bst.svg?style=flat-square)](https://www.npmjs.com/package/nodejs-bst)
 
@@ -91,17 +91,14 @@ bst.hasNumber() // Error: You must pass a number to the hasNumber function
 bst.hasNumber('foo') // Error: You must pass a number to the hasNumber function
 ```
 
-### Convertion
-
-#### As a string
-
-The toString and inspect functions are used to parse Javascript objects as string, nodejs-bst provides an override for this functions to offer a visual reference of the data in a bst structure and preventing the common [objec type] result.
+### Paths
 
 ```javascript
 // Import module
 const BST = require('nodejs-bst')
 
-const bst = new BST([5, 2, 1, 7, 9])
+const bst = new BST([2,15,7,4,9])
 
-console.log(bst) // { 5: [ { 2: [ { 1: [] }, {} ] }, { 7: [ {}, { 9: [] } ] } ] }
+// In order path
+bst.getInorderPath() // [ 2, 4, 7, 9, 15 ]
 ```

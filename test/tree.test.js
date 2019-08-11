@@ -341,4 +341,25 @@ describe('Binary search tree (BST) data structure paths testing', () => {
         }))
     })
 
+    test('Check data structure preorder path', () => {
+        const dataset = [
+            15,
+            9,
+            8,
+            5,
+            11,
+            10,
+            21,
+            17,
+            18,
+            25,
+            24,
+            28
+        ]
+
+        const bst = new BST(dataset)
+
+        expect(bst.getPreorderPath()).toEqual(dataset)
+    })
+
 })

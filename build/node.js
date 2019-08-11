@@ -8,7 +8,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
  * @author Nickolas Garcia <gfelipenickolas@gmail.com>
  * @version 1.0.3
  * @since 1.0.0
- * @todo Add order methods (preorden, postorden)
+ * @todo Add order methods (postorden)
  */
 class Node {
 
@@ -20,12 +20,12 @@ class Node {
 
 
     /**
-     * @property {number} [value] Current node value
+     * @property {Node} [rightNode] Reference of the right hand child node
      */
 
 
     /**
-     * @property {Node} [parentNode] Reference of the predecessor node
+     * @property {Node} [leftNode] Reference of the left hand child node
      */
     constructor(args, parent) {
         this.leftNode = null;
@@ -36,7 +36,7 @@ class Node {
         if (args != null) {
             if (typeof args === 'number') {
                 this.value = args;
-            } else if (Array.isArray(args)) {
+            } else if (Array.isArray(args) && args.every(number => typeof number === 'number')) {
                 this.addMultiple(args);
             } else {
                 throw new Error('Node constructor argument must be a single or array of numbers');
@@ -62,6 +62,7 @@ class Node {
         this.addMultiple = this.addMultiple.bind(this);
         this.addNumber = this.addNumber.bind(this);
         this.getInorderPath = this.getInorderPath.bind(this);
+        this.getPreorderPath = this.getPreorderPath.bind(this);
         this.hasNumber = this.hasNumber.bind(this);
         this.isFullBinary = this.isFullBinary.bind(this);
         this.removeMultiple = this.removeMultiple.bind(this);
@@ -79,12 +80,12 @@ class Node {
 
 
     /**
-     * @property {Node} [rightNode] Reference of the right hand child node
+     * @property {number} [value] Current node value
      */
 
 
     /**
-     * @property {Node} [leftNode] Reference of the left hand child node
+     * @property {Node} [parentNode] Reference of the predecessor node
      */
     _appendChild(node) {
         const { leftNode, rightNode, value } = this;
@@ -199,7 +200,7 @@ class Node {
         const { leftNode, rightNode } = this;
 
         if (!(node instanceof Node)) {
-            throw new Error('The _removeChildNode method argument must be a node object');
+            throw new Error('The _removeChildNode method node argument must be a node object');
         }
 
         // Current node value must not be compare because it is empty at this point
@@ -247,10 +248,6 @@ class Node {
             return;
         }
 
-        if (clone == null) {
-            throw new Error('An unexpected error had happened');
-        }
-
         if (clone.rightNode != null) {
             const removedNode = this._removeChildNode(clone.rightNode);
 
@@ -277,7 +274,7 @@ class Node {
      */
     _setCurrentNode(node) {
         if (!(node instanceof Node)) {
-            throw new Error('The _setCurrentNode method argument must be a node object');
+            throw new Error('The _setCurrentNode method node argument must be a node object');
         }
 
         this.value = node.value;
@@ -300,7 +297,7 @@ class Node {
      */
     _updateParent(parent) {
         if (!(parent instanceof Node)) {
-            throw new Error('The _updateParent method argument must be a node object');
+            throw new Error('The _updateParent method parent argument must be a node object');
         }
         this.parentNode = parent;
     }
@@ -313,8 +310,8 @@ class Node {
      * @returns {undefined}
      */
     addMultiple(numbers) {
-        if (!Array.isArray(numbers)) {
-            throw new Error('The addMultiple method argument must be an array');
+        if (!Array.isArray(numbers) && numbers.every(number => typeof number === 'number')) {
+            throw new Error('The addMultiple method numbers argument must be an array of number');
         }
 
         for (let idx = 0; idx < numbers.length; idx++) {
@@ -331,7 +328,7 @@ class Node {
      */
     addNumber(number) {
         if (typeof number !== 'number') {
-            throw new Error('The addNumber method argument must be a number');
+            throw new Error('The addNumber method number argument must be a number');
         }
 
         // Set the initial value of the node if it is null
@@ -390,6 +387,15 @@ class Node {
         return Object.assign(new Node(), _extends({}, node));
     }
 
+    /**
+     * @function
+     * @name getInorderPath
+     * @description Returns the data structure inorder path
+     * @param {number[]} [path=[]] Data structure's current path
+     * @param {number} [lastValue] Last value added to the current path
+     * @param {number} [lastIndex] Last index added to the current path
+     * @returns {number[]} Data structure's inorder path
+     */
     getInorderPath(path = [], lastValue, lastIndex) {
         // Validate current value
         if (this.value == null) {
@@ -397,7 +403,7 @@ class Node {
         }
         // Validate path type
         if (!Array.isArray(path)) {
-            throw new Error('The getInorderPath function argument must be a an array');
+            throw new Error('The getInorderPath function path argument must be an array');
         }
         // Case when a lastValue is passed
         if (lastValue != null) {
@@ -405,7 +411,7 @@ class Node {
             if (lastValue < this.value) {
                 // Case when there is no lastIndex
                 if (lastIndex == null) {
-                    throw new Error('An unexpected error had happened');
+                    throw new Error('The getInorderPath function lastIndex argument must be a number');
                 }
                 if (this.leftNode != null && this.leftNode.value !== lastIndex) {
                     return this.leftNode.getInorderPath(path, lastValue, this.value);
@@ -448,9 +454,56 @@ class Node {
     /**
      * TODO
      * getPostorderPath(): number[] {}
-     * 
-     * getPreorderPath(): number[] {}
      */
+
+    /**
+     * @function
+     * @name getPreorderPath
+     * @description Returns the data structure preorder path
+     * @param {number[]} [path=[]] Data structure's current path
+     * @param {Object} [index={}] Index of values added to the current path
+     * @returns {number[]} Data structure's preorder path
+     */
+    getPreorderPath(path = [], index = {}) {
+        // Validate path type
+        if (!Array.isArray(path)) {
+            throw new Error('The getPreorderPath function path argument must be a an array');
+        }
+        // Validate index type
+        if (typeof index !== 'object') {
+            throw new Error('The getPreorderPath function index argument must be a an object');
+        }
+
+        // Case when the root's value is empty
+        if (this.value == null) {
+            return [];
+        }
+
+        // Case when the left node is not empty and has not been added to the path
+        if (this.leftNode != null) {
+            if (index == null || index[this.leftNode.value] !== 1) {
+                return this.leftNode.getPreorderPath([...path, this.value], _extends({}, index, { [this.value]: 1 }));
+            }
+        }
+        // Case when the right node is not empty and has not been added to the path
+        if (this.rightNode != null) {
+            if (index == null || index[this.rightNode.value] !== 1) {
+                if (index != null && index[this.value] !== 1) {
+                    return this.rightNode.getPreorderPath([...path, this.value], _extends({}, index, { [this.value]: 1 }));
+                }
+                return this.rightNode.getPreorderPath(path, index);
+            }
+        }
+        // Case when the parent node is not empty and has not been added to the path
+        if (this.parentNode != null) {
+            if (index != null && index[this.value] !== 1) {
+                return this.parentNode.getPreorderPath([...path, this.value], _extends({}, index, { [this.value]: 1 }));
+            }
+            return this.parentNode.getPreorderPath(path, index);
+        }
+
+        return path;
+    }
 
     /**
      * @function

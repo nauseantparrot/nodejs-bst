@@ -6,7 +6,7 @@
  * @name Node
  * @description Represents each node in the binary search tree data structure
  * @author Nickolas Garcia <gfelipenickolas@gmail.com>
- * @version 1.0.4
+ * @version 1.0.5
  * @since 1.0.0
  */
 class Node {
@@ -434,10 +434,10 @@ class Node {
             let rightPath = []
 
             if (this.leftNode != null) {
-                leftPath = this.leftNode.getPostorderPath()
+                leftPath = this.leftNode.getInorderPath()
             }
             if (this.rightNode != null) {
-                rightPath = this.rightNode.getPostorderPath()
+                rightPath = this.rightNode.getInorderPath()
             }
             
             return [

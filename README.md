@@ -111,6 +111,18 @@ const BST = require('nodejs-bst')
 
 const bst = new BST([15,9,8,5,11,10,21,17,18,25,24,28])
 
-// Inorder path
+// Preorder path
 bst.getPreorderPath() // [ 15, 9, 8, 5, 11, 10, 21, 17, 18, 25, 24, 28 ]
+```
+
+### Postorder path
+
+```javascript
+// Import module
+const BST = require('nodejs-bst')
+
+const bst = new BST([15,9,8,5,11,10,21,17,18,25,24,28])
+
+// Postorder path
+bst.getPostorderPath() // [ 5, 8, 10, 11, 9, 18, 17, 24, 28, 25, 21, 15 ]
 ```

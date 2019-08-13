@@ -6,9 +6,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
  * @name Node
  * @description Represents each node in the binary search tree data structure
  * @author Nickolas Garcia <gfelipenickolas@gmail.com>
- * @version 1.0.3
+ * @version 1.0.4
  * @since 1.0.0
- * @todo Add order methods (postorden)
  */
 class Node {
 
@@ -20,12 +19,12 @@ class Node {
 
 
     /**
-     * @property {Node} [rightNode] Reference of the right hand child node
+     * @property {number} [value] Current node value
      */
 
 
     /**
-     * @property {Node} [leftNode] Reference of the left hand child node
+     * @property {Node} [parentNode] Reference of the predecessor node
      */
     constructor(args, parent) {
         this.leftNode = null;
@@ -62,6 +61,7 @@ class Node {
         this.addMultiple = this.addMultiple.bind(this);
         this.addNumber = this.addNumber.bind(this);
         this.getInorderPath = this.getInorderPath.bind(this);
+        this.getPostorderPath = this.getPostorderPath.bind(this);
         this.getPreorderPath = this.getPreorderPath.bind(this);
         this.hasNumber = this.hasNumber.bind(this);
         this.isFullBinary = this.isFullBinary.bind(this);
@@ -80,12 +80,12 @@ class Node {
 
 
     /**
-     * @property {number} [value] Current node value
+     * @property {Node} [rightNode] Reference of the right hand child node
      */
 
 
     /**
-     * @property {Node} [parentNode] Reference of the predecessor node
+     * @property {Node} [leftNode] Reference of the left hand child node
      */
     _appendChild(node) {
         const { leftNode, rightNode, value } = this;
@@ -452,9 +452,28 @@ class Node {
     }
 
     /**
-     * TODO
-     * getPostorderPath(): number[] {}
+     * @function
+     * @name getPostorderPath
+     * @descripcion Returns the data structure postorder path
+     * @returns {number[]} Data structure's postorder path
      */
+    getPostorderPath() {
+        // Validate current value
+        if (this.value != null) {
+            let leftPath = [];
+            let rightPath = [];
+
+            if (this.leftNode != null) {
+                leftPath = this.leftNode.getPostorderPath();
+            }
+            if (this.rightNode != null) {
+                rightPath = this.rightNode.getPostorderPath();
+            }
+
+            return [...leftPath, ...rightPath, this.value];
+        }
+        return [];
+    }
 
     /**
      * @function

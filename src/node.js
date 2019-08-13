@@ -6,9 +6,8 @@
  * @name Node
  * @description Represents each node in the binary search tree data structure
  * @author Nickolas Garcia <gfelipenickolas@gmail.com>
- * @version 1.0.3
+ * @version 1.0.4
  * @since 1.0.0
- * @todo Add order methods (postorden)
  */
 class Node {
 
@@ -52,9 +51,11 @@ class Node {
 
     static clone: (node: Node) => Node
 
-    getInorderPath: (path: ?number[], lastValue: ?number, lastIndex: ?number) => number[]
+    getInorderPath: () => number[]
 
-    getPreorderPath: (path: ?number[], index: ?Object) => number[]
+    getPostorderPath: () => number[]
+
+    getPreorderPath: () => number[]
 
     hasNumber: (number: number) => boolean
 
@@ -104,6 +105,7 @@ class Node {
         this.addMultiple = this.addMultiple.bind(this)
         this.addNumber = this.addNumber.bind(this)
         this.getInorderPath = this.getInorderPath.bind(this)
+        this.getPostorderPath = this.getPostorderPath.bind(this)
         this.getPreorderPath = this.getPreorderPath.bind(this)
         this.hasNumber = this.hasNumber.bind(this)
         this.isFullBinary = this.isFullBinary.bind(this)
@@ -423,149 +425,84 @@ class Node {
      * @function
      * @name getInorderPath
      * @description Returns the data structure inorder path
-     * @param {number[]} [path=[]] Data structure's current path
-     * @param {number} [lastValue] Last value added to the current path
-     * @param {number} [lastIndex] Last index added to the current path
      * @returns {number[]} Data structure's inorder path
      */
-    getInorderPath(path: ?number[] = [], lastValue: ?number, lastIndex: ?number): number[] {
+    getInorderPath(): number[] {
         // Validate current value
-        if (this.value == null) {
-            return []
-        }
-        // Validate path type
-        if (!Array.isArray(path)) {
-            throw new Error('The getInorderPath function path argument must be an array')
-        }
-        // Case when a lastValue is passed
-        if (lastValue != null) {
-            // Case when the passed index is lower than the current one
-            if (lastValue < this.value) {
-                // Case when there is no lastIndex
-                if (lastIndex == null) {
-                    throw new Error('The getInorderPath function lastIndex argument must be a number')
-                }
-                if (this.leftNode != null && this.leftNode.value !== lastIndex) {
-                    return this.leftNode.getInorderPath(path, lastValue, this.value)
-                }
-                // Case when the rightNode is already set
-                if (this.rightNode != null) {
-                    return this.rightNode.getInorderPath(
-                        [...path, this.value],
-                        this.value,
-                        this.value
-                    )
-                }
-                // Case when the parentNode is already set
-                if (this.parentNode != null) {
-                    return this.parentNode.getInorderPath(
-                        [...path, this.value],
-                        this.value,
-                        this.value
-                    )
-                }
-                // Case when the parentNode have not been set yet
-                return path
+        if (this.value != null) {
+            let leftPath = []
+            let rightPath = []
+
+            if (this.leftNode != null) {
+                leftPath = this.leftNode.getPostorderPath()
             }
-            // Case when the lastValue is higher then the current one
-            if (lastValue > this.value) {
-                if (this.parentNode != null) {
-                    return this.parentNode.getInorderPath(path, lastValue, this.value)
-                }
-                // Case when the parentNode have not been set yet
-                return path
+            if (this.rightNode != null) {
+                rightPath = this.rightNode.getPostorderPath()
             }
-        }
-        // Case when a lastValue is not passed
-        if (this.leftNode != null) {
-            return this.leftNode.getInorderPath(path, lastValue, this.value)
-        }
-        // Case when the current rightNode is already set
-        if (this.rightNode != null) {
-            return this.rightNode.getInorderPath(
-                [...path, this.value],
+            
+            return [
+                ...leftPath,
                 this.value,
-                this.value
-            )
+                ...rightPath
+            ]
         }
-        // Case when the parentNode is already set
-        if (this.parentNode != null) {
-            return this.parentNode.getInorderPath(
-                [...path, this.value],
-                this.value,
-                this.value
-            )
-        }
-        return [...path, this.value]
+        return []
     }
 
     /**
-     * TODO
-     * getPostorderPath(): number[] {}
+     * @function
+     * @name getPostorderPath
+     * @descripcion Returns the data structure postorder path
+     * @returns {number[]} Data structure's postorder path
      */
+    getPostorderPath(): number[] {
+        // Validate current value
+        if (this.value != null) {
+            let leftPath = []
+            let rightPath = []
+
+            if (this.leftNode != null) {
+                leftPath = this.leftNode.getPostorderPath()
+            }
+            if (this.rightNode != null) {
+                rightPath = this.rightNode.getPostorderPath()
+            }
+            
+            return [
+                ...leftPath,
+                ...rightPath,
+                this.value
+            ]
+        }
+        return []
+    }
 
     /**
      * @function
      * @name getPreorderPath
      * @description Returns the data structure preorder path
-     * @param {number[]} [path=[]] Data structure's current path
-     * @param {Object} [index={}] Index of values added to the current path
      * @returns {number[]} Data structure's preorder path
      */
-    getPreorderPath(path: ?number[] = [], index: ?Object = {}): number[] {
-        // Validate path type
-        if (!Array.isArray(path)) {
-            throw new Error('The getPreorderPath function path argument must be a an array')
-        }
-        // Validate index type
-        if (typeof index !== 'object') {
-            throw new Error('The getPreorderPath function index argument must be a an object')
-        }
+    getPreorderPath(): number[] {
+        // Validate current value
+        if (this.value != null) {
+            let leftPath = []
+            let rightPath = []
 
-        // Case when the root's value is empty
-        if (this.value == null) {
-            return []
-        }
-
-        // Case when the left node is not empty and has not been added to the path
-        if (this.leftNode != null) {
-            if (index == null || index[this.leftNode.value] !== 1) {
-                return this.leftNode.getPreorderPath(
-                    [...path, this.value],
-                    {...index, [this.value]: 1}
-                )
+            if (this.leftNode != null) {
+                leftPath = this.leftNode.getPreorderPath()
             }
-        }
-        // Case when the right node is not empty and has not been added to the path
-        if (this.rightNode != null) {
-            if (index == null || index[this.rightNode.value] !== 1) {
-                if (index != null && index[this.value] !== 1) {
-                    return this.rightNode.getPreorderPath(
-                        [...path, this.value],
-                        {...index, [this.value]: 1}
-                    )
-                }
-                return this.rightNode.getPreorderPath(
-                    path,
-                    index
-                )
+            if (this.rightNode != null) {
+                rightPath = this.rightNode.getPreorderPath()
             }
+            
+            return [
+                this.value,
+                ...leftPath,
+                ...rightPath
+            ]
         }
-        // Case when the parent node is not empty and has not been added to the path
-        if (this.parentNode != null) {
-            if (index != null && index[this.value] !== 1) {
-                return this.parentNode.getPreorderPath(
-                    [...path, this.value],
-                    {...index, [this.value]: 1}
-                )
-            }
-            return this.parentNode.getPreorderPath(
-                path,
-                index
-            )
-        }
-
-        return path
+        return []
     }
 
     /**
@@ -590,10 +527,6 @@ class Node {
         // Case when number is less than the current node value
         if (number < this.value) {
             if (this.leftNode != null) {
-                if (!(this.leftNode instanceof Node)) {
-                    throw new Error('The children of a node must be node objects')
-                }
-
                 return this.leftNode.hasNumber(number)
             }
 
@@ -602,9 +535,6 @@ class Node {
         // Else
         if (this.rightNode == null) {
             return false
-        }
-        if (!(this.rightNode instanceof Node)) {
-            throw new Error('The children of a node must be node objects')
         }
 
         return this.rightNode.hasNumber(number)
@@ -628,11 +558,6 @@ class Node {
         }
         
         if (leftNode != null && rightNode != null) {
-
-            if (!(leftNode instanceof Node && rightNode instanceof Node)) {
-                throw new Error('The children of a node must be node objects')
-            }
-
             return leftNode.isFullBinary() && rightNode.isFullBinary()
         }
 

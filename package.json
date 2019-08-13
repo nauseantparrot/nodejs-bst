@@ -1,6 +1,6 @@
 {
   "name": "nodejs-bst",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Library for binary search tree structures (BST) manipulation",
   "main": "index.js",
   "repository": {
